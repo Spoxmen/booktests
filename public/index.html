@@ -1,0 +1,148 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#btn1").click(function(){
+      $("#tab2").hide(500);
+      $("#tab1").show(500);
+      $.post("/",
+        {
+         "option": 1,
+         "stopcounter": 0
+        },
+     function(response){
+      response.sort(function(a, b){return b.LP-a.LP});
+      response.forEach(function(el, i, arr) {
+        $("#row1").after("<tr><td>"+el.LP+"</td><td>"+el.author+"</td><td>"+el.title+"</td><td>"+el.date+"</td><td>"+el.publisher+"</td><td>"+el.availability+"</td></tr>");
+        });
+      })
+    })
+  })
+</script>
+<script>
+  $(document).ready(function(){
+    $("#btn2").click(function(){
+      $("#tab2").show(500);
+      $("#tab1").hide(500);
+    })
+  })
+</script>
+<script>
+  $(document).ready(function(){
+    $("#btn3").click(function(){
+      $.post("/",
+        {
+          "option": 2,
+	        "author": $("#author1").val(),
+	        "title": $("#title1").val(),
+	        "date": $("#date1").val(),
+	        "publisher": $("#publisher1").val(),
+	        "availability": $("#availability1").val(),
+          "stopcounter": 0
+        },
+        function(response){
+          $("#result").after("dodano wpis pod pozycją: "+response.LP);
+        })
+       })
+      })
+</script>
+<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.column {
+  float: left;
+  width: 15%;
+  padding: 15px;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+</style>
+</head>
+<body>
+
+    <div class="row">
+        <div class="column"></div>
+        <div class="column" style="background-color: #DEE6FF; text-align: justify; width: 69%;">
+            <h1 align="center">Lista pożądanych książek</h1><br>
+            <button id="btn1">Wczytaj listę</button>
+            <button id="btn2">Wprowadź nową pozycję</button><br>
+            <table id="tab1" table style="border: 0.5mm ridge black " width=100%>
+                    <tr id="row1">
+                            <td>LP.</td>
+                            <td>Autor</td>
+                            <td>Tytuł</td>
+                            <td>Rok wydania</td>
+                            <td>Wydawnictwo</td>
+                            <td>Dostępność</td>
+                    </tr>
+            </table><br>
+            <table id="tab2" table style="border: 0.5mm ridge black " width=100% hidden>
+              <tr>
+                <td>
+                  Autor: 
+                </td>
+                <td>
+                  <input type="text" id="author1" >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Tytuł:  
+                </td>
+                <td>
+                  <input type="text" id="title1" >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Data wydania: 
+                </td>
+                <td>
+                  <input type="text" id="date1" >  
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Wydawca:  
+                </td>
+                <td>
+                  <input type="text" id="publisher1" >  
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Dostępność:   
+                </td>
+                <td>
+                  <input type="text" id="availability1" >  
+                </td>
+              </tr>
+              <tr>
+                <th colspan="2">
+                  <button id="btn3">Wyślij</button><br>
+                </th>
+              </tr>
+              <tr>
+                <th id="result" colspan="2">
+                  
+                </th>
+              </tr>
+            </table>
+        </div>
+        <div class="column"></div>
+    </div>
+</body>
+</html>
